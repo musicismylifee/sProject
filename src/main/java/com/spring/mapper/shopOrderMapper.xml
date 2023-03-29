@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="mapper.order">
+	<select id="info" parameterType="java.lang.String" resultType="com.myshop.vo.MyshopOrderVO">
+		select oid, id, pname, brand, price, psfile, category_id, myshop_product.pid
+			from myshop_orders, myshop_product
+			where myshop_orders.pid = myshop_product.pid and oid = #{oid}
+	</select>
+	<select id="select" parameterType="map" resultType="com.myshop.vo.MyshopOrderVO">
+		select mop.oid, mop.odate, mop.psfile, mop.brand, mop.pname, mop.price, mop.pid, mop.status, mop.quantity, NVL(mr.rid,0) rid from
+(select oid,  to_char(odate, 'yyyy-mm-dd') odate, psfile, brand, pname, price, myshop_product.pid pid, status, myshop_orders.quantity quantity
+    from myshop_orders, myshop_product
+    where myshop_orders.pid = myshop_product.pid and myshop_orders.id = #{id}
+		<if test="sorttype neq null">
+			<choose>
+		    <when test="sorttype == 'ing'">
+		      and 5 > status 
+		    </when>
+		    <when test="sorttype == 'complete'">
+		      and status = 5 
+		    </when>
+		    <when test="sorttype == 'cancel'">
+		      and status = 6
+		    </when>
+		    <otherwise>
+		    </otherwise>
+		  </choose>
+		</if>
+		<if test="searchtext neq null">
+			<choose>
+			    <when test="searchtype == 'pname'">
+			      and pname like '%'||#{searchtext}||'%'
+			    </when>
+			    <when test="searchtype == 'oid'">
+			      and oid like '%'||#{searchtext}||'%'
+			    </when>
+			    <otherwise>
+			    </otherwise>
+			  </choose>
+		</if>
+
+    ) mop, myshop_review mr where mr.oid(+) = mop.oid
+	</select>
+	<update id="update_status" parameterType="int">
+		update myshop_orders set status = 6 where oid= #{oid}
+	</update>
+	<select id="status_count" parameterType="java.lang.String" resultType="com.myshop.vo.MyshopOrderVO">
+		select status2.status, nvl(statuscount,0) statuscount
+			from (select  status, count(status) statuscount
+			            from myshop_orders, myshop_product
+			            where myshop_orders.pid = myshop_product.pid and myshop_orders.id =#{id}
+			            group by status order by status) status1, myshop_status_test status2
+			where status1.status(+) = status2.status
+			order by status2.status
+	</select>
+</mapper>

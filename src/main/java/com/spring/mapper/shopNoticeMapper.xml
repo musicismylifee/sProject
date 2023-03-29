@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="mapper.notice">
+
+	<!-- notice join-->
+	<insert id="insert" parameterType="com.myshop.vo.MyshopNoticeVO">
+		insert into myshop_notice
+			values('n_'||sequ_myshop_notice.nextval,#{ntitle}, #{ncontent}, #{ncode}, #{nfile}, #{nsfile}, #{ncrucial}, #{nsdate}, #{nedate})
+	</insert>
+	
+	<!-- notice select_all-->
+	<select id="select_all" resultType="com.myshop.vo.MyshopNoticeVO">
+		select rownum rno, nid, ntitle, ncrucial, nfile ,nsdate, nedate, ncode
+				from(select nid, ntitle, ncrucial, nfile ,nsdate, nedate, ncode from myshop_notice)
+	</select>
+	
+	<!-- notice total_count-->
+	<select id="total_count" resultType="int">
+		select count(*) from myshop_notice
+	</select>
+	
+	<!-- notice delete-->
+	<delete id="delete" parameterType="java.lang.String">
+		delete from myshop_notice where nid = #{nid}
+	</delete>
+	
+	<!-- notice select-->
+	<select id="select" parameterType="java.lang.String" resultType="com.myshop.vo.MyshopNoticeVO">
+		select nid, ncode, ntitle, ncontent, ncrucial, nfile ,nsdate, nedate from myshop_notice where nid=#{nid}
+	</select>
+	<!-- notice update-->
+	<update id="update" parameterType="com.myshop.vo.MyshopNoticeVO">
+		update myshop_notice set ncode=#{ncode}, ntitle=#{ntitle}, ncontent=#{ncontent}, nfile=#{nfile}, nsfile=#{nsfile} , ncrucial=#{ncrucial}, nsdate=#{nsdate}, nedate=#{nedate}
+		 where nid=#{nid}
+	</update>
+	
+	<!-- notice user_select_all-->
+	<select id="user_select_all" parameterType="map" resultType="com.myshop.vo.MyshopNoticeVO">
+		select rno, nid, ntitle, ncrucial, nsdate, nedate, ncode
+		from (select rownum rno, nid, ntitle, ncrucial, nsdate, nedate, ncode
+				from(select nid, ntitle, ncrucial, nsdate, nedate, ncode from myshop_notice)
+				where to_char(sysdate, 'yyyy-mm-dd')>=nsdate and nedate>=to_char(sysdate, 'yyyy-mm-dd')
+				)
+		where rno between #{start} and #{end}
+	</select>
+	
+	<!-- notice admin_search_select-->
+	<select id="admin_search_select" parameterType="map" resultType="com.myshop.vo.MyshopNoticeVO">
+		
+		select rno, nid, ntitle, ncrucial, nsdate, nedate, ncode
+		from (select rownum rno, nid, ntitle, ncrucial, nsdate, nedate, ncode
+				from(select nid, ntitle, ncrucial, nsdate, nedate, ncode from myshop_notice 
+				 <choose>
+				    <when test="searchtype == 'ntitle'">
+				      where ntitle like '%'||#{text}||'%'
+				    </when>
+				    <otherwise>
+				       where ncontent like '%'||#{text}||'%'
+				    </otherwise>
+				  </choose>
+				
+				)
+				where to_char(sysdate, 'yyyy-mm-dd')>=nsdate and nedate>=to_char(sysdate, 'yyyy-mm-dd')
+				)
+		where rno between #{start} and #{end}
+		
+	</select>
+	
+	<!-- notice search_select-->
+	<select id="search_select" parameterType="map" resultType="com.myshop.vo.MyshopNoticeVO">
+		select rownum rno, nid, ntitle, ncrucial, nfile ,nsdate, nedate, ncode
+				from(select nid, ntitle, ncrucial, nfile ,nsdate, nedate, ncode from myshop_notice
+				<where>
+				<if test="searchtype neq ''">
+					<choose>
+				    <when test="searchtype == 'ntitle'">
+				      and ntitle like '%'||#{text}||'%'
+				    </when>
+				    <otherwise>
+				       and ncontent like '%'||#{text}||'%'
+				    </otherwise>
+				  </choose>
+				</if>
+				<if test="nsdate neq ''">and nsdate >= #{nsdate} and #{nedate} >= nsdate </if>
+				<if test="ncode neq ''">and ncode = #{ncode}</if>
+				<if test="ncrucial neq ''">and ncrucial = #{ncrucial}</if>
+				<if test="posttype neq ''">
+					<choose>
+				    <when test="posttype == 'ready'">
+				      and nsdate > to_char(sysdate, 'yyyy-mm-dd')
+				    </when>
+				    <when test="posttype == 'ing'">
+				      and to_char(sysdate, 'yyyy-mm-dd') between nsdate and nedate
+				    </when>
+				    <otherwise>
+				       and to_char(sysdate, 'yyyy-mm-dd') > nedate 
+				    </otherwise>
+				  </choose>
+				</if>
+				</where>
+				)
+	</select>
+</mapper>  

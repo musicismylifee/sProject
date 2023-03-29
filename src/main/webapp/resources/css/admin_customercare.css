@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {--main-color: #323232;; --color-dark: #1D2231; --text-grey:#8390A2;}
+
+* { padding: 0; margin: 0; box-sizing: border-box; list-style-type: none; text-decoration: none; font-family: 'Poppins', sans-serif; }
+
+
+main {
+    margin-top: 85px; padding: 2rem 1.5rem; background: #f1f5f9; min-height: calc(100vh - 90px);
+}
+
+.recent-grid {white-space: nowrap; display: grid; grid-gap:1.5rem; grid-template-columns: auto 76%;}
+
+.card {background: #fff; border-radius: 5px;  }
+
+.card-header {display: flex; justify-content: space-between; padding: 1rem; align-items: center; border: 1px solid #f0f0f0;}
+
+
+.customercares { width: 270px; height: 100%; background: #fff;}
+.card-body {padding: 1rem;}
+.card-body:first-of-type { padding:0 }
+.card-body ul li {width: 100%; }
+.card-body ul li a { display: block; padding: 1rem;  color: var(--main-colors);}
+.card-body ul li a span {display: inline-block; margin-left: 1rem;}
+.card-body ul a.active {  background: var(--main-color);  padding: 1rem; color: #fff; border-radius: 2px;} 
+
+
+.card-header .search-wrapper {width: 800px;}
+.card-header h3 { padding-left: .7rem;}
+.card-header .search-wrapper input {width: 100%;}
+
+table { border-collapse: collapse; ;}
+
+thead tr {border-top: 1px solid #f0f0f0; border-bottom:2px solid #f0f0f0;}
+
+thead td {font-weight: 600;}
+td {padding: .5rem 1rem; font-size: .9rem; color: #222;} 
+
+
+

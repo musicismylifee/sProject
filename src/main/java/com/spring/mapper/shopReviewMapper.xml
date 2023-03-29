@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="mapper.review">
+	<insert id="insert" parameterType="com.myshop.vo.MyshopReviewVO">
+		insert into myshop_review
+			values ('r_'||sequ_myshop_review.nextval, #{pid}, #{oid},#{rwriter}, #{score}, #{rcontent}, #{rfile}, #{rsfile}, 0, sysdate)
+	</insert>
+	
+	<select id="admin_selectAll" resultType="com.myshop.vo.MyshopReviewVO">
+		select rid, myshop_product.pid, pname, category_id, rcontent, rwriter, oid, score, rfile, recom, to_char(rdate, 'yyyy-mm-dd') rdate
+			from MYSHOP_REVIEW, myshop_product where MYSHOP_REVIEW.pid = myshop_product.pid
+	</select>
+	<select id="totalcount" resultType="int">
+		select count(*) from myshop_review
+	</select>
+	<delete id="delete" parameterType="java.lang.String">
+		delete from myshop_review where rid = #{rid}
+	</delete>
+	<select id="content" parameterType="java.lang.String" resultType="com.myshop.vo.MyshopReviewVO">
+		select score, rwriter, to_char(rdate, 'yyyy-mm-dd') rdate, rcontent, pname, recom, rsfile, rid, oid 
+			from myshop_review, myshop_product where rid = #{rid} and myshop_review.pid = myshop_product.pid  
+	</select>
+	<select id="user_content" parameterType="java.lang.String" resultType="com.myshop.vo.MyshopReviewVO">
+		select mr.score, mr.rcontent, mr.rsfile, mp.pname, mp.brand, mp.price, mp.psfile, mp.pid, mp.category_id, mr.oid, mr.rwriter 
+			from myshop_review mr, myshop_product mp where rid = #{rid} and mr.pid = mp.pid  
+	</select>
+	
+	<select id="selectAll" parameterType="map" resultType="com.myshop.vo.MyshopReviewVO">
+		select rno, rid, pname, category_id, rcontent, rwriter, score, rfile, recom, rdate, brand    
+			from(select rownum rno, rid, pname, category_id, rcontent, rwriter, score, rfile, recom, rdate, brand
+			from(select rid, pname, category_id, rcontent, rwriter, score, rfile, recom, to_char(rdate, 'yyyy-mm-dd') rdate, brand
+			from myshop_review, myshop_product where myshop_review.pid = myshop_product.pid))
+			where rno between #{start} and #{end}
+	</select>
+	<select id="info" resultType="com.myshop.vo.MyshopReviewVO">
+		select rid, myshop_product.pid, pname, category_id, rcontent, rwriter, oid, score, rfile, recom, to_char(rdate, 'yyyy-mm-dd') rdate
+			from MYSHOP_REVIEW, myshop_product where MYSHOP_REVIEW.pid = myshop_product.pid
+	</select>
+	
+	<update id="update" parameterType="com.myshop.vo.MyshopReviewVO">
+		update myshop_review set score = #{score}, rcontent = #{rcontent}, rfile = #{rfile}, rsfile = #{rsfile} where rid= #{rid}
+	</update>
+	
+	<select id="search_select" parameterType="map" resultType="com.myshop.vo.MyshopReviewVO">
+		select rid, myshop_product.pid, pname, category_id, rcontent, rwriter, oid, score, rfile, recom, to_char(rdate, 'yyyy-mm-dd') rdate
+			from MYSHOP_REVIEW, myshop_product where MYSHOP_REVIEW.pid = myshop_product.pid
+			<if test="searchtype neq 'defalt'">
+				<choose>
+					<when test="searchtype eq 'rcontent'">
+						and rcontent like '%'||#{searchtext}||'%'
+					</when>
+					<when test="searchtype eq 'pname'">
+						and pname like '%'||#{searchtext}||'%'
+					</when>
+					<when test="searchtype eq 'rid'">
+						and rid like '%'||#{searchtext}||'%'
+					</when>
+					<otherwise>
+						and rwriter like '%'||#{searchtext}||'%'
+			    	</otherwise>
+				</choose>
+			</if>
+			<if test="!searchscore.isEmpty() ">
+				and score in (
+				<foreach collection="searchscore" item="arr" separator=",">
+					#{arr}
+				</foreach>
+				 	)
+			</if>
+			<if test="searchdate neq ''">
+				<choose>
+					<when test="searchdate eq 'today'">
+						and to_char(rdate, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd')
+					</when>
+					<when test="searchdate eq 'week'">
+						and to_char(rdate, 'yyyy-mm-dd') > to_char(sysdate-7, 'yyyy-mm-dd')
+					</when>
+					<when test="searchdate eq 'month'">
+						and to_char(rdate, 'yyyy-mm-dd') > to_char(add_months(sysdate,-1), 'yyyy-mm-dd')
+					</when>
+					<when test="searchdate eq '3months'">
+						and to_char(rdate, 'yyyy-mm-dd') > to_char(add_months(sysdate,-3), 'yyyy-mm-dd')
+					</when>
+					<when test="searchdate eq '6months'">
+						and to_char(rdate, 'yyyy-mm-dd') > to_char(add_months(sysdate,-6), 'yyyy-mm-dd')
+					</when>
+					<when test="searchdate eq 'years'">
+						and to_char(rdate, 'yyyy-mm-dd') > to_char(add_months(sysdate,-6), 'yyyy-mm-dd')
+					</when>
+					<otherwise>
+				    </otherwise>
+			    </choose>
+			</if>
+	</select>
+	
+</mapper>

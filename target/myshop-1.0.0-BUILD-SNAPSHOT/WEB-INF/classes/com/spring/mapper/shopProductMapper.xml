@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="mapper.product">
+	<!-- 관리자 상품등록 -->
+	<insert parameterType="com.myshop.vo.MyshopProductVO" id="insert">
+		insert into myshop_product values(
+		sequ_shop_product.nextval,#{category_id}, #{pname}, #{brand}, #{quantity}, #{price}, #{delivery_price},
+		sysdate, sysdate, #{rating}, #{pdetail}, #{pfile}, #{psfile},#{psize}) 
+	</insert>
+	<!-- 상품목록 전체리스트 -->
+	<select parameterType="map" id="list" resultType="com.myshop.vo.MyshopProductVO">
+		select rno,pid,psfile,pname,brand,category_id,quantity,price,delivery_price,regdate,updatedate from 
+			(select rownum rno,pid,psfile,pname,brand,category_id,quantity,price,delivery_price, to_char(regdate, 'yyyy-mm-dd') regdate, to_char(updatedate,'yyyy-mm-dd') updatedate from 
+				(select pid,psfile,pname,brand,category_id,quantity,price,delivery_price,regdate,updatedate from myshop_product order by regdate desc)) where rno between #{start} and #{end}
+	</select>
+	<!-- 전체 로우수출력 -->
+	<select id="totalcount" resultType="int">select count(*) from myshop_product</select>
+	
+	<!-- 상품 상세보기 -->
+	<select parameterType="int" id="productDetail" resultType="com.myshop.vo.MyshopProductVO">
+	select pid,pname,pdetail,delivery_price,price,psfile from myshop_product where pid=#{pid} 
+	</select>
+	
+	<!-- 관리자 카테고리 리스트설정 -->
+	<select id="getCategoryList" resultType="com.myshop.vo.MyshopCategoryVO">
+	<![CDATA[
+		SELECT 
+		    LEVEL  
+		    ,CONNECT_BY_ISLEAF   LF
+		    ,group_id
+		   ,CATEGORY_ID 
+		   ,CATEGORY_NM  
+		   ,CONNECT_BY_ROOT(CATEGORY_ID) CATEGORY_ROOT
+			FROM MYSHOP_CATEGORY  
+			WHERE  1 = 1 START WITH CATEGORY_PARENT_ID = 0
+			CONNECT BY PRIOR CATEGORY_ID = CATEGORY_PARENT_ID
+			ORDER SIBLINGS BY CATEGORY_DEPT, CATEGORY_ID
+		]]>
+	</select>
+	
+	<!-- nav 카테고리 리스트 -->
+	<!-- 여성 -->
+	<select id="getWcategory_id" resultType="com.myshop.vo.MyshopCategoryVO">
+		<![CDATA[
+		SELECT 
+		    LEVEL               LV
+		    ,group_id
+		   ,CATEGORY_ID 
+		   ,CATEGORY_NM  
+		   ,CONNECT_BY_ROOT(CATEGORY_ID) CATEGORY_ROOT
+			FROM MYSHOP_CATEGORY  
+			WHERE GROUP_ID='W' AND 1 = 1 START WITH CATEGORY_PARENT_ID = 1
+			CONNECT BY PRIOR CATEGORY_ID = CATEGORY_PARENT_ID
+			ORDER SIBLINGS BY CATEGORY_DEPT, CATEGORY_ID
+		]]>
+	</select>
+	<!-- 남성 -->
+	<select id="getMcategory_id" resultType="com.myshop.vo.MyshopCategoryVO">
+		<![CDATA[
+		SELECT 
+		    LEVEL               LV
+		    ,group_id
+		   ,CATEGORY_ID 
+		   ,CATEGORY_NM  
+		   ,CONNECT_BY_ROOT(CATEGORY_ID) CATEGORY_ROOT
+			FROM MYSHOP_CATEGORY  
+			WHERE GROUP_ID='M' AND 1 = 1 START WITH CATEGORY_PARENT_ID = 2
+			CONNECT BY PRIOR CATEGORY_ID = CATEGORY_PARENT_ID
+			ORDER SIBLINGS BY CATEGORY_DEPT, CATEGORY_ID
+		]]>
+	</select>
+	<!-- 키즈 -->
+	<select id="getKcategory_id" resultType="com.myshop.vo.MyshopCategoryVO">
+		<![CDATA[
+		SELECT 
+		    LEVEL               LV
+		    ,group_id
+		   ,CATEGORY_ID 
+		   ,CATEGORY_NM  
+		   ,CONNECT_BY_ROOT(CATEGORY_ID) CATEGORY_ROOT
+			FROM MYSHOP_CATEGORY  
+			WHERE GROUP_ID='K' AND 1 = 1 START WITH CATEGORY_PARENT_ID = 3
+			CONNECT BY PRIOR CATEGORY_ID = CATEGORY_PARENT_ID
+			ORDER SIBLINGS BY CATEGORY_DEPT, CATEGORY_ID
+		]]>
+	</select>
+	<!-- 라이프 -->
+	<select id="getLcategory_id" resultType="com.myshop.vo.MyshopCategoryVO">
+		<![CDATA[
+		SELECT 
+		    LEVEL               LV
+		    ,group_id
+		   ,CATEGORY_ID 
+		   ,CATEGORY_NM  
+		   ,CONNECT_BY_ROOT(CATEGORY_ID) CATEGORY_ROOT
+			FROM MYSHOP_CATEGORY  
+			WHERE GROUP_ID='L' AND 1 = 1 START WITH CATEGORY_PARENT_ID = 4
+			CONNECT BY PRIOR CATEGORY_ID = CATEGORY_PARENT_ID
+			ORDER SIBLINGS BY CATEGORY_DEPT, CATEGORY_ID
+		]]>
+	</select>
+</mapper>  

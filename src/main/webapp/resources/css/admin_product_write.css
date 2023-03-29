@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {--main-color: #323232;; --color-dark: #1D2231; --text-grey:#8390A2;}
+
+* { padding: 0; margin: 0; box-sizing: border-box; list-style-type: none; text-decoration: none; font-family: 'Poppins', sans-serif; }
+
+
+
+
+main {
+    margin-top: 85px; padding: 2rem 1.5rem; background: #f1f5f9; min-height: calc(100vh - 90px);
+}
+
+.recent-grid {white-space:nowrap; margin-top: 3.5rem; display: grid; /* grid-gap:1.3rem; */ grid-template-columns:100%;}
+
+.card {background: #fff; border-radius: 5px;}
+
+.card-header {display: flex; justify-content: space-between; padding: 1rem; align-items: center; border: 1px solid #f0f0f0;}
+
+
+
+.customercares { width: 270px; height: 100%; background: #fff;}
+.card-body {padding: 1rem;}
+.card-body:first-of-type { padding:0 }
+.card-body ul li {width: 100%; }
+.card-body ul li a { display: block; padding: 1rem;  color: var(--main-colors);}
+.card-body ul li a span {display: inline-block; margin-left: 1rem;}
+.card-body ul a.active {  background: var(--main-color);  padding: 1rem; color: #fff; border-radius: 2px;} 
+
+
+.card-header .search-wrapper {width: 980px;}
+.card-header .search-wrapper input {width: 100%;}
+
+table { border-collapse: collapse; ;}
+
+thead tr {border-top: 1px solid #f0f0f0; border-bottom:2px solid #f0f0f0;}
+
+thead td {font-weight: 600;}
+td {padding: .5rem 1rem; font-size: .9rem; color: #222;} 
+
+
+
+
+
+	/* ��� ���� ���� */
+	.title_box{
+		/* border:1px solid black; */
+		display:block;
+		background-color:white;	
+		border-radius:5px;
+		padding:1.4rem;
+		position:relative;	
+		box-shadow: 2px 2px 5px rgb(0 0 0 / 20%);
+	}
+	.title { position: relative; left: 1.5rem; font-size: 1.6rem;}
+	.product_content{ width:100%; background-color:white; display:block; position:relative; top:-10px;
+		 box-shadow: 2px 2px 5px rgb(0 0 0 / 20%); border-radius:5px; margin-bottom:20px; }
+	
+	.list_content{ padding: 3rem; justify-content: space-between; align-items: center;}
+	
+	/* ��ǰ �� ��ȸ */
+	.product_list_content{ width:100%; border-collapse: separate; margin-bottom:20px;
+		border-spacing: 0 0 50px 0; padding:20px; border:1px solid #dbdde2; border-radius:5px;}
+	.product_list_content th{ vertical-align: middle; background: var(--main-color); color: #fff;
+		 border: 1px solid  #fff; width: 200px; border-radius: .5rem;}
+	.product_list_content th span{ justify-self: center; color: red; margin-left:.3rem; display: inline-block; }
+	
+	.product_list_content td { background: #fff;  border-radius: 10px; color: var(--main-color); font-size: .8rem; padding: 0.5rem 2rem;
+	    border: 1px solid var(--main-color); margin-right: 10px;}
+	
+	.product_list_content td input {background: #fff;  border-radius: 10px; color: var(--main-color); font-size: .8rem; padding: 0.5rem 2rem;
+	    border: 1px solid var(--main-color); margin-right: 10px;}	
+	
+	
+	.category_name{ background: #fff;  border-radius: 10px; color: var(--main-color); font-size: .8rem; padding: 0.5rem 2rem;
+	    border: 1px solid var(--main-color); margin-right: 10px; }
+	.cate_wrap_list{display:flex; padding:0.5rem 1rem 0.5rem 0;}
+	.cate_wrap{display:inline-block; }
+	.category_name{ display:inline-block; width:200px; margin-right:10px; padding:0.5rem 1rem;} 
+	select{width: 180px; font-size:.8rem; padding:0.5rem 1rem; margin-right:10px;}
+	/** images upload **/
+	input[type="file"] {
+		display: none; 
+	}
+
+	.product_img {display:block; width: 180px; height:180px; border: 1px dashed #c6c0d1; border-radius: 5px; }
+	.product_img span{ display: block; vertical-align: center;  text-align: center; line-height: 180px; color: #aca9b1; width: 180px; height: 180px; }
+	
+	.product_btn{background: #fff; border-radius: 10px; color: var(--main-color); font-size: .8rem;
+	    padding: 0.5rem 0rem;  width:100px;  border: 1px solid var(--main-color); margin-right: 10px;}
+	.addProductbtns{ text-align: center; }
+	.product_btn:first-child{background: var(--main-color); border-radius: 10px; color: #fff; font-size: .8rem;
+	    width:100px; padding: 0.5rem 0rem; border: 1px solid var(--main-color);}
+	
+	

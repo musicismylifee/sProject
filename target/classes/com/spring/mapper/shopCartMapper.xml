@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="mapper.cart">
+   <!-- cart add-->
+   <insert id="add" parameterType="com.myshop.vo.MyshopCartVO">
+      insert into myshop_cart 
+         values (sequ_shop_cart.nextval, #{amt}, #{id}, #{pid},sysdate)
+   </insert>
+   
+    
+   <select parameterType="java.lang.String" id="list" resultType="com.myshop.vo.MyshopCartVO">
+   
+      SELECT MC.BID,MP.PID,MP.PNAME,MP.BRAND,MP.PSIZE,MP.PRICE,MP.DELIVERY_PRICE,MP.PSFILE,MC.AMT FROM MYSHOP_PRODUCT MP, MYSHOP_CART MC, MYSHOP_MEMBER MM
+      WHERE MP.PID = MC.PID AND MC.ID = MM.ID AND MC.id = #{id}
+      
+
+   </select>
+    
+    <!-- cart delete-->
+   <delete id="delete" parameterType="java.lang.String">
+      delete from myshop_cart where bid = #{bid}
+   </delete>
+    
+</mapper>

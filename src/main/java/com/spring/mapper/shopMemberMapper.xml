@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="mapper.member">
+	<!-- member join-->
+	<insert id="join" parameterType="com.myshop.vo.MyshopMemberVO">
+		insert into myshop_member 
+			values (#{id}, #{pass}, #{name}, #{email}, #{zonecode}
+				, #{hp}, #{pnumber}, #{addr}, #{birth}, sysdate, 'BASIC'
+				, #{email_check}, #{gender}, 0, null)
+	</insert>
+	
+	<!--  idCheck  -->
+	<select resultType="int" parameterType="java.lang.String" id="idcheck">
+		select count(id) from myshop_member where id=#{id}
+	 </select>
+	 
+	 <!-- member login-->
+	<select parameterType="com.myshop.vo.MyshopMemberVO" id="login" resultType="com.myshop.vo.SessionVO">
+		select count(*) loginresult, name, id from myshop_member where id=#{id} and pass=#{pass} group by name, id 
+	</select>
+	
+	<!-- member select_all -->
+	<select id="select_all" resultType="com.myshop.vo.MyshopMemberVO">
+		select name, id, email, grade, acc, to_char(visit, 'yyyy-mm-dd') visit from myshop_member
+	</select>
+	
+	<!-- member total_count -->
+	<select id="total_count" resultType="int">
+		select count(*) from myshop_member
+	</select>
+	
+	<!-- member total_count -->
+	<update id="update_visit" parameterType="java.lang.String">
+		update myshop_member set visit = sysdate where id = #{id}
+	</update>	
+	
+	<!-- member select_search -->
+	<select id="select_search" parameterType="map" resultType="com.myshop.vo.MyshopMemberVO">
+		select name, id, email, grade, acc, to_char(visit, 'yyyy-mm-dd') visit from myshop_member 
+		<where>
+		<if test="sorttype neq''">
+			and grade = #{sorttype}
+		</if>
+		<if test="searchtext neq''">
+			and name like '%'||#{searchtext}||'%'
+		</if>
+		</where>
+	</select>
+	
+	<!--member delete  -->
+	<select id="delete" parameterType="java.lang.String">
+		delete from myshop_member where id = #{id}
+	</select>
+	
+	<!-- member select -->
+	<select id="select" resultType="com.myshop.vo.MyshopMemberVO">
+		select id, name, email, grade, to_char(mdate, 'yyyy-mm-dd') mdate
+		, to_char(visit, 'yyyy-mm-dd') visit, zonecode, addr 
+		, hp, pnumber, birth, email_check, gender from myshop_member where id=#{id}
+	</select>
+	
+	<!-- member admin_update -->
+	<update id="admin_update" parameterType="com.myshop.vo.MyshopMemberVO">
+		update myshop_member set name=#{name}, email=#{email}, zonecode=#{zonecode}, addr=#{addr}
+		, birth=#{birth}, email_check=#{email_check}, gender=#{gender} where id=#{id}
+	</update>
+	
+	<!-- 로그인 아이디 , 비밀번호 찾기 -->
+	<select id="findId" resultType="com.myshop.vo.MyshopMemberVO">
+		select * from myshop_member where name=#{name}
+	</select>
+	
+	<select id="findPass" resultType="com.myshop.vo.MyshopMemberVO">
+		select * from myshop_member where id=#{id} and name=#{name} and pnumber=#{pnumber}
+	</select>
+	
+	<update id="updatePass">
+		update users set pwd=#{pwd} where id=#{id}
+	</update>
+</mapper>    	

@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {--main-color: #323232;; --color-dark: #1D2231; --text-grey:#8390A2;}
+
+* { padding: 0; margin: 0; box-sizing: border-box; list-style-type: none; text-decoration: none; font-family: 'Poppins', sans-serif; }
+
+
+#nav-toggle {display:none;}
+#nav-toggle:checked ~ .sidebar {display: none;}
+#nav-toggle:checked ~ .main-content {margin-left: auto; }
+#nav-toggle:checked ~ .main-content header {width: calc(100%); left: auto;}
+
+/** sidebar-menu **/
+.sidebar { width: 270px; position: fixed; left: 0; top: 0; height: 100%; background: var(--main-color); z-index: 100;}
+.sidebar-brand{ display: inline; padding:1rem 0rem 1rem 2rem;}
+.sidebar-brand h2 {margin-left: 3rem; color: #d01f3c;}
+.sidebar-brand span { display: inline-block; padding-right: 1rem; }
+.sidebar-menu { margin-top: 1rem; }
+.sidebar-menu li{ width: 100%; padding-left: 2rem; border-bottom:1px solid var(--text-grey);}
+
+.sidebar-menu a { padding:1rem; display: block; color: #fff; font-size: 1.1rem;}
+.sidebar-menu a.active {   color: #fff; } 
+.sidebar-menu a span:first-child {font-size: 1.5rem; padding-right: 1rem;}
+
+/** sub-menu **/
+.menu a{cursor:pointer;}
+.menu .sub-menu a{ padding:.2rem 1rem;} 
+.menu .sub-menu li:last-child{padding-bottom: .4rem;}
+.menu .sub-menu li {padding:0; margin:0; border-bottom: none; }
+
+.menu .sub-menu{display:none;}
+
+
+.menu .sub-menu a span{position: relative; left: 40px; color: #8390A2; padding:0; font-size: 1rem;}
+.menu .sub-menu a:hover > span{color: green;}
+/** 메세지 보내기 알림/SMS tab메뉴 **/
+.tabmenu input[type="radio"] {display: none;}
+
+.tabmenu > label {font-weight: bold; margin-left: 1rem; text-align: center; border-bottom: 1px solid black; width: 8%; cursor: pointer; display: inline-block;  padding: 10px 0; font-size: 13px;}
+.tabmenu > label:hover{color: green;}
+.tabmenu > div { display: none;}
+.tabmenu #tab1:checked ~ #cont1,
+.tabmenu #tab2:checked ~ #cont2,
+.tabmenu #tab3:checked ~ #cont3{ display: block;}
+
+.main-content { margin-left:270px; transition: margin-left 300ms;}
+
+header { display: flex; justify-content: space-between; padding: 1rem 1.5rem; box-shadow: 2px 2px 5px rgba(0,0,0,0.2); position: fixed; left: 270px; width: calc(100% - 270px); top:0; z-index: 100; transition: width 300ms;}
+
+.header h2 { color: #222;}
+
+.search-wrapper { border: 1px solid #f0f0f0; border-radius: 30px; height: 50px; display: flex;    align-items: center; overflow-x: hidden;}
+.search-wrapper span { display: inline-block; padding: 0rem 1rem; font-size: 1.5rem;}
+.search-wrapper input {height: 100%; padding: .5rem; border: none; outline: none;}
+
+.user-wrapper { display: flex; align-items: center;}
+.user-wrapper img { border-radius: 50%; margin-right: 1rem; }
+.user-wrapper small { display: inline-block; color: var(--text-grey);  margin-top: -10px !important;}
+
+main {
+    margin-top: 85px; padding: .1rem 1.5rem 2rem; background: #f1f5f9; min-height: calc(100vh - 90px);
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 2rem;
+    margin-top: 1rem;
+}
+
+.card-single {
+    background: #fff;
+    border-radius: 2px;
+}
+.card-single h3 {padding: 2rem 0 1rem 2rem; font-size: 1.17rem; font-weight: 600;}
+
+
+
+
+
+
+
+
+.recent-grid {margin-top: 1.5rem; display: grid; grid-gap: 1.5rem; grid-template-columns: auto;}
+
+.card {background: #fff; border-radius: 5px; padding: 1rem;}
+
+.card-header{ padding: 1rem; align-items: center; }
+.card-body {padding: 1rem;}
+.card-header button {background: var(--main-color); border-radius: 10px; color: #fff; font-size: .8rem; padding: .5rem 1rem; border: 1px solid var(--main-color);} 
+
+
+.adminMessageHeader {display: flex; justify-content: space-between; align-items: center; padding: .5rem .7rem;}
+
+
+/** 댓글 탭메뉴 **/
+
+
+
+.info {display: flex; align-items: center;}
+
+.info img {border-radius: 50%; margin-right: 1rem;}
+
+.info h4 {font-size: .8rem; font-weight: 700; color: #222;}
+
+.info smalselectl {font-weight: 600; color: var(--text-grey);}
+
+.contact span {font-size: 1.2rem; display: inline-block; margin-left: .5rem; color: var(--main-color);}
+select { border: none; outline: none; font-weight: 600; font-size: 1rem; width:20%; margin: 2rem -.3rem 0;}
+select{border-bottom: 2px solid #f0f0f0;}
+.card-body p {font-size: .8rem;}
+
+.messageContent label{display: block;}
+.card-body ul li {padding:1rem 0 1rem;}
+.card-body ul li label{font-size: .9rem; color: lightslategray;}
+.filebox label {display: inline-block; padding: .5em .75em; font-size: inherit; cursor: pointer; border: 1px solid #ebebeb; border-bottom: 2px solid #ebebeb; border-bottom-color: #e2e2e2; border-radius: .25em;
+  }
+ /* file field hidden */
+.filebox input[type="file"] { width: 0px; height: 0px;}
+.card-body ul li input[type="text"] {width: 70%;}
+.card-body ul li textarea {width: 100%;}
+.card-body ul li input,
+.card-body ul li textarea{ border: none; outline:none; border-bottom:1px solid #f0f0f0; }
+.card-body {font-size: 1rem;}
+.card-body ul li input[type=checkbox] { width: 20px; height:1rem;}
+
+.card-body ul li input[type=datetime-local] {display: block; }
+.card-body ul li button{   padding: .5em .75em; font-size: inherit; font-weight:600; cursor: pointer; border: 1px solid #ebebeb; border-bottom: 2px solid #ebebeb; border-bottom-color: #e2e2e2;border-radius: .25em;}
+.card-body ul li button:hover{ background:rgba(22, 166, 238,.8); color: white; font-weight: 600;}
+
+table{ border-collapse:collapse; font-size: 1rem; width: 100%; }
+table tr{border-bottom: 1px solid #f0f0f0; text-align: left; }
+table th:first-child,
+table td:first-child { padding-left:2rem; padding-top: 1rem; padding-bottom: 1rem;}
+
+table th:nth-child(n+3),
+table td:nth-child(n+3){padding-left: .5rem;}
+
+table th:last-child,
+table td:last-child {padding-left: .5rem;}
+
+
